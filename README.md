@@ -1,63 +1,99 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/q9wGcN9U)
-# CD 2023 Project
+# Distributed Music Processing Project
 
-Here we have a sample code that loads one mp3 file and splits it 
-into 4 tracks: vocals, drums, bass and other.
+This project aims to split music into multiple chunks and process them in parallel. It leverages Python, Flask, Celery, and Redis to distribute and coordinate the processing of music files across multiple workers.
 
-The codes uses one library named [demucs](https://github.com/facebookresearch/demucs),
-this library uses a deep learning model to separate the tracks.
-This library requires [ffmpeg](https://ffmpeg.org/) to work.
-It should be present in most Linux distributions.
+## Installation
 
-## Dependencies
+1. Make sure you have Python3, pip, and Redis installed on your machine. If you don't, follow these links to install [Python3](https://www.python.org/downloads/), [pip](https://pip.pypa.io/en/stable/installation/), and [Redis](https://redis.io/download).
+   
+2. Clone this repository to your local machine:
 
-For Ubuntu (and other debian based linux), run the following commands:
+    ```
+    git clone https://github.com/yourusername/Distributed_Music_Editor.git
+    cd Distributed_Music_Editor
+    ```
 
-```bash
-sudo apt install ffmpeg
-```
+3. Set up a virtual environment and install the required packages:
 
-## Setup
+    ```
+    python3 -m venv venv
+    source venv/bin/activate  # For Windows, use `.\venv\Scripts\activate`
+    pip install -r requirements.txt
+    ```
 
-Run the following commands to setup the environement:
-```bash
-mkdir tracks
+4. Start the Redis server (used by Celery as a message broker):
+    On mac os:
+    ```
+    brew services start redis
+    ```
+    On linux:
+    ```
+    sudo systemctl start redis
+    ```
+    On Windows:
+    ```
+    redis-server
+    ```
 
-python3 -m venv venv
-source venv/bin/activate
+4. Change the Redis Config to your ip address and protected mode to no:
+    On mac os:
+    ```
+    sudo nano /opt/homebrew/etc/redis.conf
+    ```
+    On linux:
+    ```
+    sudo nano /etc/redis/redis.conf
+    ```
+    On Windows:
+    ```
+    redis-server
+    ```
 
-pip install pip --upgrade
-pip install -r requirements_torch.txt
-pip install -r requirements_demucs.txt
-```
+5. Start the Redis server (used by Celery as a message broker):
+    On mac os:
+    ```
+    brew services start redis
+    ```
+    On linux:
+    ```
+    sudo systemctl start redis
+    ```
+    On Windows:
+    ```
+    redis-server
+    ```
 
-It is important to install the requirements following the previous instructions.
-By default, PyTorch will install the CUDA version of the library (over 4G simple from the virtual environment).
-As such, the current instructions force the installation of the CPU version of PyTorch and then installs Demucs.
+6. Start a Celery worker:
+    Open in diferent terminals to see the progress
 
+    ```
+    ./run_Worker.sh
+    ```
 
 ## Usage
 
-The sample main code only requires two parameters:
-- **i** the mp3 file used for input
-- **o** the folder for the output
+1. To start the Flask API server, run:
 
-Two audio tracks are given (download them from [here](https://filesender.fccn.pt/?s=download&token=cd4fcd29-b3f1-4a4d-9da3-50aae00e702d)):
-- **test.mp3** a short sample (0:34) that allows for a quick validation
-- **mudic.mp3** a long (59:04) sequence of royalty free rock musics that are the target of the work
+    ```
+    python3 api.py
+    ```
 
-Both audio files are royalty free.
+    The server will start at `http://{your_ip_address}:5000`.
 
-To run test the sample code simple run:
-```bash
-python main.py -i test.mp3
-```
+2. To send a file to be processed just upload a file on the button "Choose File" and click on "Upload File" button.
 
+3. 
+    To processe the file with the default parameters just click on "Process File" button and choose which instruments you would like the file to have.
 
-## Authors
+The response will contain the progress of the processing, download links for the separated tracks, and the final merged track once processing is complete.
 
-* **Mário Antunes** - [mariolpantunes](https://github.com/mariolpantunes)
+Please note that this project is experimental and not intended for production use.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the terms of the MIT license. See the [LICENSE](LICENSE) file for details.
+
+## Authors
+
+* [Duarte Cruz](https://github.com/DuarteCruz31)
+* [André Oliveira](https://github.com/andreaoliveira9)

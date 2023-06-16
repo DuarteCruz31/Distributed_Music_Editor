@@ -10,8 +10,6 @@ from flask import json
 import requests
 from io import BytesIO
 import tempfile
-import uuid
-
 
 import logging
 import argparse

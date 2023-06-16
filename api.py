@@ -3,7 +3,6 @@ from io import BytesIO
 import socket
 import os
 import json
-import uuid
 import time
 import tempfile
 import base64
