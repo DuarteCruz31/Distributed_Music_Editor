@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Status da Música</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      setTimeout(function () {
+        location.reload();
+      }, 5000);
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+      }
+      h1,
+      h2,
+      h3 {
+        color: #343a40;
+      }
+      ul {
+        list-style-type: none;
+      }
+      li {
+        margin: 5px 0;
+      }
+      a {
+        display: inline-block;
+        margin: 10px 0;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: white;
+        background-color: #007bff;
+        border-radius: 5px;
+      }
+      a:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="music_id" style="display: none">{{ music_id }}</div>
+    <h1>Status da Música ID: {{ music_id }}</h1>
+    <h2>Mensagem: {{ message }}</h2>
+    {% if tasks %}
+    <h3>Status das Tarefas:</h3>
+    <ul>
+      {% for task in tasks %}
+      <li>Task ID: {{ task.task_id }} - Status: {{ task.status }}</li>
+      {% endfor %}
+    </ul>
+    <h2 id="remaining_time">
+      Tempo estimado restante: {{ estimated_remaining_time }} segundos
+    </h2>
+
+    {% endif %} {% if estimated_remaining_time == 0 %}
+    <h3>Processamento concluído. Faça o download das faixas abaixo:</h3>
+    {% for track_name in track_names %}
+    <p>
+      <a href="/api/music/{{ music_id }}/{{ track_name }}/download"
+        >Download {{ track_name }}</a
+      >
+    </p>
+    {% endfor %} {% endif %}
+  </body>
+</html>
